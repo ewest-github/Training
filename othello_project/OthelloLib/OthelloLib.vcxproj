@@ -153,10 +153,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="function.h" />
     <ClInclude Include="OthelloLib.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="game_progress.cpp" />
+    <ClCompile Include="game_start.cpp" />
     <ClCompile Include="OthelloLib.cpp" />
+    <ClCompile Include="pass_check.cpp" />
+    <ClCompile Include="stone_rolling.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
