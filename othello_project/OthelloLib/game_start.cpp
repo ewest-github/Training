@@ -1,4 +1,3 @@
-//#include<stdio.h>
 
 #include "OthelloLib.h"
 #include "function.h"
