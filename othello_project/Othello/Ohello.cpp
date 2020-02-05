@@ -3,6 +3,8 @@
 #include "OthelloLib.h"
 #include "function.h"
 
+//test
+
 int main() {
 	
 	//オセロ盤面の石配置配列の定義
