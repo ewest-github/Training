@@ -3,7 +3,7 @@
 #include "OthelloLib.h"
 #include "function.h"
 
-//test22
+//testAAAA
 
 int main() {
 	
