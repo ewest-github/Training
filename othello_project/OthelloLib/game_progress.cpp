@@ -6,7 +6,7 @@
 void game_progress(int* b)
 {
 	//ターン管理用変数(黒が先手)
-	int turn = BLACK_STONE;
+	turn = BLACK_STONE;
 
 	//終了フラグ
 	int game_end = 60;

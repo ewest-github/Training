@@ -41,8 +41,9 @@ int stone_rolling(int* b, int h, int w)
 			}
 			else
 			{
-				while (w1 != 0 && *(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) != 0 && *(b + (h * HEIGHT) + w) != *(b + ((h + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w + p[DIRECTION_INDEX::LEFT].x))
+				while (w1 != 0 && *(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) != NONE_PLAY && *(b + ((h + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w + p[DIRECTION_INDEX::LEFT].x) != turn)
 				{
+					/*
 					//移動終了の判定(盤面端まで到達)
 					if (w1 == 0)
 					{
@@ -58,6 +59,7 @@ int stone_rolling(int* b, int h, int w)
 					{
 						break;
 					}
+					*/
 
 					//座標の移動
 					h1 = h1 + p[DIRECTION_INDEX::LEFT].y;

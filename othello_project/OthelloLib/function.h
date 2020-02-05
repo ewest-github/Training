@@ -13,4 +13,9 @@ void pass_check(int* b, int x, int y);
 //Î‚Ì”½“]‰Â”Û‚ğ”»’è‚·‚éŠÖ”
 int stone_rolling(int* b, int h, int w);
 
+
+//ƒ^[ƒ“‚ğŠÇ—‚·‚é•Ï”
+int turn;
+
+
 #endif // !_FUNCTION_H_

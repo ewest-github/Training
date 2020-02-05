@@ -1,2 +1,8 @@
-﻿  stone_rolling.cpp
+﻿  game_progress.cpp
+  game_start.cpp
+  stone_rolling.cpp
+  コードを生成中...
+pass_check.obj : warning LNK4006: "int turn" (?turn@@3HA) は stone_rolling.obj で定義されています。2 つ目以降の定義は無視されます。
+game_start.obj : warning LNK4006: "int turn" (?turn@@3HA) は stone_rolling.obj で定義されています。2 つ目以降の定義は無視されます。
+game_progress.obj : warning LNK4006: "int turn" (?turn@@3HA) は stone_rolling.obj で定義されています。2 つ目以降の定義は無視されます。
   OthelloLib.vcxproj -> C:\Users\古川　潤\Desktop\Training\othello_project\Debug\OthelloLib.lib
