@@ -4,6 +4,7 @@
 #include "OthelloLib.h"
 #include "function.h"
 
+//Î‚Ì”½“]
 int stone_rolling(int* b, int h, int w)
 {
 	//’TõˆÊ’u‚ÌÀ•W
