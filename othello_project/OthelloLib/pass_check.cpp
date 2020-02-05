@@ -5,6 +5,9 @@
 
 void pass_check(int* b, int x, int y)
 {
+	//先頭アドレスの保存]
+	int* ba = b;
+
 	//ループ終了条件:全てのマスをチェックするまで
 	while (x != 0)
 	{
@@ -17,7 +20,7 @@ void pass_check(int* b, int x, int y)
 				//該当マスがコマ未配置のとき
 				if (*(b + (h * HEIGHT) + w) == 0)
 				{
-					stone_rolling(b, x, y);
+					stone_rolling(ba, h, w);
 				}
 				//該当マスがコマ配置済みの場合
 				else

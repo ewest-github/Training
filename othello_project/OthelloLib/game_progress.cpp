@@ -3,13 +3,13 @@
 #include "OthelloLib.h"
 #include "function.h"
 
-void game_progress(int* b, int x)
+void game_progress(int* b)
 {
 	//ターン管理用変数(黒が先手)
 	int turn = BLACK_STONE;
 
 	//終了フラグ
-	int game_end = 62;
+	int game_end = 60;
 
 	//ループ終了条件:終了フラグが立っていないとき
 	while (game_end != 0)

@@ -1,7 +1,2 @@
-﻿  game_progress.cpp
-  game_start.cpp
-  OthelloLib.cpp
-  pass_check.cpp
-  stone_rolling.cpp
-  コードを生成中...
+﻿  stone_rolling.cpp
   OthelloLib.vcxproj -> C:\Users\古川　潤\Desktop\Training\othello_project\Debug\OthelloLib.lib
