@@ -101,7 +101,11 @@ int stone_rolling(int* b, int h, int w, int m)
 							//石配置可能フラグを立てる
 							s = 1;
 						}
-						//
+						//反転動作を行う
+						else if(m == 1)
+						{
+							;
+						}
 						else
 						{
 							;
