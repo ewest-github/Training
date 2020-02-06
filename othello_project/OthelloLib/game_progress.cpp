@@ -103,6 +103,10 @@ void game_progress(int* b)
 				{
 					white_stone++;
 				}
+				else
+				{
+					;
+				}
 			}
 		}
 	}
