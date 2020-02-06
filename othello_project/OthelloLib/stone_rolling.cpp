@@ -4,6 +4,9 @@
 #include "OthelloLib.h"
 #include "function.h"
 
+//アクティブターン
+extern int turn;
+
 //石の反転
 int stone_rolling(int* b, int h, int w, int m)
 {
@@ -44,22 +47,54 @@ int stone_rolling(int* b, int h, int w, int m)
 			{
 				//ループ終了条件:横が端ではなく、探索方向のマスが未配置ではなく、探索方向のマスが同じ色の石にならない
 				while (w1 != BOARD_LINE_INDEX_1 &&
-					*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) != NONE_PLAY && 
+					*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) != NONE_PLAY &&
 					*(b + ((h + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w + p[DIRECTION_INDEX::LEFT].x) != turn)
 				{
 					//座標の移動
 					h1 = h1 + p[DIRECTION_INDEX::LEFT].y;
 					w1 = w1 + p[DIRECTION_INDEX::LEFT].x;
 
-					//同じ色の石が見つかったとき
-					if (*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) == turn)
+					//端でないとき
+					if (w1 != BOARD_LINE_INDEX_1)
 					{
-						//石配置可能フラグを立てる
-						s = 1;
+						//同じ色の石が見つかったとき
+						if (*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) == turn)
+						{
+							//引数で戻り値を分けて機能切り替えする
+							//石の配置可能フラグを戻すとき
+							if (m == 0)
+							{
+								//石配置可能フラグを立てる
+								s = 1;
+							}
+							//反転動作を行う
+							else if (m == 1)
+							{
+								//配置位置まで石を反転したとき
+								while (h != h1 || w != w1)
+								{
+									//プレイヤーターンの石に変更する
+									*(b + (h1 * HEIGHT) + w1) = turn;
 
-						//ループを抜ける
-						break;
+									//座標の移動(配置位置に向かう)
+									h1 = h1 - p[DIRECTION_INDEX::LEFT].y;
+									w1 = w1 - p[DIRECTION_INDEX::LEFT].x;
+								}
+							}
+							else
+							{
+								;
+							}
+
+							//ループを抜ける
+							break;
+						}
+						else
+						{
+							;
+						}
 					}
+					//端のとき
 					else
 					{
 						;
@@ -84,36 +119,54 @@ int stone_rolling(int* b, int h, int w, int m)
 				//ループ終了条件:横が端ではなく、縦が端ではなく、探索方向のマスが未配置ではなく、探索方向のマスが同じ色の石にならない
 				while (w1 != BOARD_LINE_INDEX_1 &&
 					h1 != BOARD_LINE_INDEX_8 &&
-					*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) != NONE_PLAY &&
-					*(b + ((h + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w + p[DIRECTION_INDEX::LEFT].x) != turn)
+					*(b + ((h1 + p[DIRECTION_INDEX::LEFT_BOTTOM].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT_BOTTOM].x) != NONE_PLAY &&
+					*(b + ((h + p[DIRECTION_INDEX::LEFT_BOTTOM].y) * HEIGHT) + w + p[DIRECTION_INDEX::LEFT_BOTTOM].x) != turn)
 				{
 					//座標の移動
-					h1 = h1 + p[DIRECTION_INDEX::LEFT].y;
-					w1 = w1 + p[DIRECTION_INDEX::LEFT].x;
+					h1 = h1 + p[DIRECTION_INDEX::LEFT_BOTTOM].y;
+					w1 = w1 + p[DIRECTION_INDEX::LEFT_BOTTOM].x;
 
-					//同じ色の石が見つかったとき
-					if (*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) == turn)
+					//端でないとき
+					if (w1 != BOARD_LINE_INDEX_1 && h1 != BOARD_LINE_INDEX_8)
 					{
-						//引数で戻り値を分けて機能切り替えする
-						//石の配置可能フラグを戻すとき
-						if (m == 0)
+						//同じ色の石が見つかったとき
+						if (*(b + ((h1 + p[DIRECTION_INDEX::LEFT_BOTTOM].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT_BOTTOM].x) == turn)
 						{
-							//石配置可能フラグを立てる
-							s = 1;
-						}
-						//反転動作を行う
-						else if(m == 1)
-						{
-							;
+							//引数で戻り値を分けて機能切り替えする
+							//石の配置可能フラグを戻すとき
+							if (m == 0)
+							{
+								//石配置可能フラグを立てる
+								s = 1;
+							}
+							//反転動作を行う
+							else if (m == 1)
+							{
+								//配置位置まで石を反転したとき
+								while (h != h1 || w != w1)
+								{
+									//プレイヤーターンの石に変更する
+									*(b + (h1 * HEIGHT) + w1) = turn;
+
+									//座標の移動(配置位置に向かう)
+									h1 = h1 - p[DIRECTION_INDEX::LEFT_BOTTOM].y;
+									w1 = w1 - p[DIRECTION_INDEX::LEFT_BOTTOM].x;
+								}
+							}
+							else
+							{
+								;
+							}
+
+							//ループを抜ける
+							break;
 						}
 						else
 						{
 							;
 						}
-
-						//ループを抜ける
-						break;
 					}
+					//端のとき
 					else
 					{
 						;
@@ -132,22 +185,54 @@ int stone_rolling(int* b, int h, int w, int m)
 			{
 				//ループ終了条件:縦が端ではなく、探索方向のマスが未配置ではなく、探索方向のマスが同じ色の石にならない
 				while (h1 != BOARD_LINE_INDEX_8 &&
-					*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) != NONE_PLAY &&
-					*(b + ((h + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w + p[DIRECTION_INDEX::LEFT].x) != turn)
+					*(b + ((h1 + p[DIRECTION_INDEX::BOTTOM].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::BOTTOM].x) != NONE_PLAY &&
+					*(b + ((h + p[DIRECTION_INDEX::BOTTOM].y) * HEIGHT) + w + p[DIRECTION_INDEX::BOTTOM].x) != turn)
 				{
 					//座標の移動
-					h1 = h1 + p[DIRECTION_INDEX::LEFT].y;
-					w1 = w1 + p[DIRECTION_INDEX::LEFT].x;
+					h1 = h1 + p[DIRECTION_INDEX::BOTTOM].y;
+					w1 = w1 + p[DIRECTION_INDEX::BOTTOM].x;
 
-					//同じ色の石が見つかったとき
-					if (*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) == turn)
+					//端でないとき
+					if (h1 != BOARD_LINE_INDEX_8)
 					{
-						//石配置可能フラグを立てる
-						s = 1;
+						//同じ色の石が見つかったとき
+						if (*(b + ((h1 + p[DIRECTION_INDEX::BOTTOM].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::BOTTOM].x) == turn)
+						{
+							//引数で戻り値を分けて機能切り替えする
+							//石の配置可能フラグを戻すとき
+							if (m == 0)
+							{
+								//石配置可能フラグを立てる
+								s = 1;
+							}
+							//反転動作を行う
+							else if (m == 1)
+							{
+								//配置位置まで石を反転したとき
+								while (h != h1 || w != w1)
+								{
+									//プレイヤーターンの石に変更する
+									*(b + (h1 * HEIGHT) + w1) = turn;
 
-						//ループを抜ける
-						break;
+									//座標の移動(配置位置に向かう)
+									h1 = h1 - p[DIRECTION_INDEX::BOTTOM].y;
+									w1 = w1 - p[DIRECTION_INDEX::BOTTOM].x;
+								}
+							}
+							else
+							{
+								;
+							}
+
+							//ループを抜ける
+							break;
+						}
+						else
+						{
+							;
+						}
 					}
+					//端のとき
 					else
 					{
 						;
@@ -172,22 +257,54 @@ int stone_rolling(int* b, int h, int w, int m)
 				//ループ終了条件:横が端ではなく、縦が端ではなく、探索方向のマスが未配置ではなく、探索方向のマスが同じ色の石にならない
 				while (w1 != BOARD_LINE_INDEX_8 &&
 					h1 != BOARD_LINE_INDEX_8 &&
-					*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) != NONE_PLAY &&
-					*(b + ((h + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w + p[DIRECTION_INDEX::LEFT].x) != turn)
+					*(b + ((h1 + p[DIRECTION_INDEX::RIGHT_BOTTOM].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::RIGHT_BOTTOM].x) != NONE_PLAY &&
+					*(b + ((h + p[DIRECTION_INDEX::RIGHT_BOTTOM].y) * HEIGHT) + w + p[DIRECTION_INDEX::RIGHT_BOTTOM].x) != turn)
 				{
 					//座標の移動
-					h1 = h1 + p[DIRECTION_INDEX::LEFT].y;
-					w1 = w1 + p[DIRECTION_INDEX::LEFT].x;
+					h1 = h1 + p[DIRECTION_INDEX::RIGHT_BOTTOM].y;
+					w1 = w1 + p[DIRECTION_INDEX::RIGHT_BOTTOM].x;
 
-					//同じ色の石が見つかったとき
-					if (*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) == turn)
+					//端でないとき
+					if (w1 != BOARD_LINE_INDEX_8 && h1 != BOARD_LINE_INDEX_8)
 					{
-						//石配置可能フラグを立てる
-						s = 1;
+						//同じ色の石が見つかったとき
+						if (*(b + ((h1 + p[DIRECTION_INDEX::RIGHT_BOTTOM].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::RIGHT_BOTTOM].x) == turn)
+						{
+							//引数で戻り値を分けて機能切り替えする
+							//石の配置可能フラグを戻すとき
+							if (m == 0)
+							{
+								//石配置可能フラグを立てる
+								s = 1;
+							}
+							//反転動作を行う
+							else if (m == 1)
+							{
+								//配置位置まで石を反転したとき
+								while (h != h1 || w != w1)
+								{
+									//プレイヤーターンの石に変更する
+									*(b + (h1 * HEIGHT) + w1) = turn;
 
-						//ループを抜ける
-						break;
+									//座標の移動(配置位置に向かう)
+									h1 = h1 - p[DIRECTION_INDEX::RIGHT_BOTTOM].y;
+									w1 = w1 - p[DIRECTION_INDEX::RIGHT_BOTTOM].x;
+								}
+							}
+							else
+							{
+								;
+							}
+
+							//ループを抜ける
+							break;
+						}
+						else
+						{
+							;
+						}
 					}
+					//端のとき
 					else
 					{
 						;
@@ -206,22 +323,54 @@ int stone_rolling(int* b, int h, int w, int m)
 			{
 				//ループ終了条件:横が端ではなく、探索方向のマスが未配置ではなく、探索方向のマスが同じ色の石にならない
 				while (w1 != BOARD_LINE_INDEX_8 &&
-					*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) != NONE_PLAY &&
-					*(b + ((h + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w + p[DIRECTION_INDEX::LEFT].x) != turn)
+					*(b + ((h1 + p[DIRECTION_INDEX::RIGHT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::RIGHT].x) != NONE_PLAY &&
+					*(b + ((h + p[DIRECTION_INDEX::RIGHT].y) * HEIGHT) + w + p[DIRECTION_INDEX::RIGHT].x) != turn)
 				{
 					//座標の移動
-					h1 = h1 + p[DIRECTION_INDEX::LEFT].y;
-					w1 = w1 + p[DIRECTION_INDEX::LEFT].x;
+					h1 = h1 + p[DIRECTION_INDEX::RIGHT].y;
+					w1 = w1 + p[DIRECTION_INDEX::RIGHT].x;
 
-					//同じ色の石が見つかったとき
-					if (*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) == turn)
+					//端でないとき
+					if (w1 != BOARD_LINE_INDEX_8)
 					{
-						//石配置可能フラグを立てる
-						s = 1;
+						//同じ色の石が見つかったとき
+						if (*(b + ((h1 + p[DIRECTION_INDEX::RIGHT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::RIGHT].x) == turn)
+						{
+							//引数で戻り値を分けて機能切り替えする
+							//石の配置可能フラグを戻すとき
+							if (m == 0)
+							{
+								//石配置可能フラグを立てる
+								s = 1;
+							}
+							//反転動作を行う
+							else if (m == 1)
+							{
+								//配置位置まで石を反転したとき
+								while (h != h1 || w != w1)
+								{
+									//プレイヤーターンの石に変更する
+									*(b + (h1 * HEIGHT) + w1) = turn;
 
-						//ループを抜ける
-						break;
+									//座標の移動(配置位置に向かう)
+									h1 = h1 - p[DIRECTION_INDEX::RIGHT].y;
+									w1 = w1 - p[DIRECTION_INDEX::RIGHT].x;
+								}
+							}
+							else
+							{
+								;
+							}
+
+							//ループを抜ける
+							break;
+						}
+						else
+						{
+							;
+						}
 					}
+					//端のとき
 					else
 					{
 						;
@@ -246,22 +395,54 @@ int stone_rolling(int* b, int h, int w, int m)
 				//ループ終了条件:横が端ではなく、縦が端ではなく、探索方向のマスが未配置ではなく、探索方向のマスが同じ色の石にならない
 				while (w1 != BOARD_LINE_INDEX_8 &&
 					h1 != BOARD_LINE_INDEX_1 &&
-					*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) != NONE_PLAY &&
-					*(b + ((h + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w + p[DIRECTION_INDEX::LEFT].x) != turn)
+					*(b + ((h1 + p[DIRECTION_INDEX::RIGHT_TOP].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::RIGHT_TOP].x) != NONE_PLAY &&
+					*(b + ((h + p[DIRECTION_INDEX::RIGHT_TOP].y) * HEIGHT) + w + p[DIRECTION_INDEX::RIGHT_TOP].x) != turn)
 				{
 					//座標の移動
-					h1 = h1 + p[DIRECTION_INDEX::LEFT].y;
-					w1 = w1 + p[DIRECTION_INDEX::LEFT].x;
+					h1 = h1 + p[DIRECTION_INDEX::RIGHT_TOP].y;
+					w1 = w1 + p[DIRECTION_INDEX::RIGHT_TOP].x;
 
-					//同じ色の石が見つかったとき
-					if (*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) == turn)
+					//端でないとき
+					if (w1 != BOARD_LINE_INDEX_8 && h1 != BOARD_LINE_INDEX_1)
 					{
-						//石配置可能フラグを立てる
-						s = 1;
+						//同じ色の石が見つかったとき
+						if (*(b + ((h1 + p[DIRECTION_INDEX::RIGHT_TOP].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::RIGHT_TOP].x) == turn)
+						{
+							//引数で戻り値を分けて機能切り替えする
+							//石の配置可能フラグを戻すとき
+							if (m == 0)
+							{
+								//石配置可能フラグを立てる
+								s = 1;
+							}
+							//反転動作を行う
+							else if (m == 1)
+							{
+								//配置位置まで石を反転したとき
+								while (h != h1 || w != w1)
+								{
+									//プレイヤーターンの石に変更する
+									*(b + (h1 * HEIGHT) + w1) = turn;
 
-						//ループを抜ける
-						break;
+									//座標の移動(配置位置に向かう)
+									h1 = h1 - p[DIRECTION_INDEX::RIGHT_TOP].y;
+									w1 = w1 - p[DIRECTION_INDEX::RIGHT_TOP].x;
+								}
+							}
+							else
+							{
+								;
+							}
+
+							//ループを抜ける
+							break;
+						}
+						else
+						{
+							;
+						}
 					}
+					//端のとき
 					else
 					{
 						;
@@ -280,22 +461,54 @@ int stone_rolling(int* b, int h, int w, int m)
 			{
 				//ループ終了条件:縦が端ではなく、探索方向のマスが未配置ではなく、探索方向のマスが同じ色の石にならない
 				while (h1 != BOARD_LINE_INDEX_1 &&
-					*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) != NONE_PLAY &&
-					*(b + ((h + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w + p[DIRECTION_INDEX::LEFT].x) != turn)
+					*(b + ((h1 + p[DIRECTION_INDEX::TOP].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::TOP].x) != NONE_PLAY &&
+					*(b + ((h + p[DIRECTION_INDEX::TOP].y) * HEIGHT) + w + p[DIRECTION_INDEX::TOP].x) != turn)
 				{
 					//座標の移動
-					h1 = h1 + p[DIRECTION_INDEX::LEFT].y;
-					w1 = w1 + p[DIRECTION_INDEX::LEFT].x;
+					h1 = h1 + p[DIRECTION_INDEX::TOP].y;
+					w1 = w1 + p[DIRECTION_INDEX::TOP].x;
 
-					//同じ色の石が見つかったとき
-					if (*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) == turn)
+					//端でないとき
+					if (h1 != BOARD_LINE_INDEX_1)
 					{
-						//石配置可能フラグを立てる
-						s = 1;
+						//同じ色の石が見つかったとき
+						if (*(b + ((h1 + p[DIRECTION_INDEX::TOP].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::TOP].x) == turn)
+						{
+							//引数で戻り値を分けて機能切り替えする
+							//石の配置可能フラグを戻すとき
+							if (m == 0)
+							{
+								//石配置可能フラグを立てる
+								s = 1;
+							}
+							//反転動作を行う
+							else if (m == 1)
+							{
+								//配置位置まで石を反転したとき
+								while (h != h1 || w != w1)
+								{
+									//プレイヤーターンの石に変更する
+									*(b + (h1 * HEIGHT) + w1) = turn;
 
-						//ループを抜ける
-						break;
+									//座標の移動(配置位置に向かう)
+									h1 = h1 - p[DIRECTION_INDEX::TOP].y;
+									w1 = w1 - p[DIRECTION_INDEX::TOP].x;
+								}
+							}
+							else
+							{
+								;
+							}
+
+							//ループを抜ける
+							break;
+						}
+						else
+						{
+							;
+						}
 					}
+					//端のとき
 					else
 					{
 						;
@@ -320,22 +533,54 @@ int stone_rolling(int* b, int h, int w, int m)
 				//ループ終了条件:横が端ではなく、縦が端ではなく、探索方向のマスが未配置ではなく、探索方向のマスが同じ色の石にならない
 				while (w1 != BOARD_LINE_INDEX_1 &&
 					h1 != BOARD_LINE_INDEX_1 &&
-					*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) != NONE_PLAY &&
-					*(b + ((h + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w + p[DIRECTION_INDEX::LEFT].x) != turn)
+					*(b + ((h1 + p[DIRECTION_INDEX::LEFT_TOP].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT_TOP].x) != NONE_PLAY &&
+					*(b + ((h + p[DIRECTION_INDEX::LEFT_TOP].y) * HEIGHT) + w + p[DIRECTION_INDEX::LEFT_TOP].x) != turn)
 				{
 					//座標の移動
-					h1 = h1 + p[DIRECTION_INDEX::LEFT].y;
-					w1 = w1 + p[DIRECTION_INDEX::LEFT].x;
+					h1 = h1 + p[DIRECTION_INDEX::LEFT_TOP].y;
+					w1 = w1 + p[DIRECTION_INDEX::LEFT_TOP].x;
 
-					//同じ色の石が見つかったとき
-					if (*(b + ((h1 + p[DIRECTION_INDEX::LEFT].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT].x) == turn)
+					//端でないとき
+					if (w1 != BOARD_LINE_INDEX_1 && h1 != BOARD_LINE_INDEX_1)
 					{
-						//石配置可能フラグを立てる
-						s = 1;
+						//同じ色の石が見つかったとき
+						if (*(b + ((h1 + p[DIRECTION_INDEX::LEFT_TOP].y) * HEIGHT) + w1 + p[DIRECTION_INDEX::LEFT_TOP].x) == turn)
+						{
+							//引数で戻り値を分けて機能切り替えする
+							//石の配置可能フラグを戻すとき
+							if (m == 0)
+							{
+								//石配置可能フラグを立てる
+								s = 1;
+							}
+							//反転動作を行う
+							else if (m == 1)
+							{
+								//配置位置まで石を反転したとき
+								while (h != h1 || w != w1)
+								{
+									//プレイヤーターンの石に変更する
+									*(b + (h1 * HEIGHT) + w1) = turn;
 
-						//ループを抜ける
-						break;
+									//座標の移動(配置位置に向かう)
+									h1 = h1 - p[DIRECTION_INDEX::LEFT_TOP].y;
+									w1 = w1 - p[DIRECTION_INDEX::LEFT_TOP].x;
+								}
+							}
+							else
+							{
+								;
+							}
+
+							//ループを抜ける
+							break;
+						}
+						else
+						{
+							;
+						}
 					}
+					//端のとき
 					else
 					{
 						;
@@ -347,6 +592,8 @@ int stone_rolling(int* b, int h, int w, int m)
 			break;
 		}
 	}
+
+	free(p);
 
 	return s;
 }

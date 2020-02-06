@@ -3,10 +3,28 @@
 #include "OthelloLib.h"
 #include "function.h"
 
-void game_progress(int* b)
+//ターンを管理
+int turn;
+
+//メッセージ表示フラグ
+int message_flag;
+
+//パスフラグ
+int pass_flag;
+
+int game_progress(int* b)
 {
 	//パスフラグ
 	int ps = 0;
+
+	//勝者
+	int winner = 0;
+
+	//メッセージフラグ
+	message_flag = 0;
+
+	//ターンを管理
+	//int turn = 0;
 
 	//パス有無入力値
 	//int num = 0;
@@ -23,8 +41,8 @@ void game_progress(int* b)
 	//盤面上の白石数
 	int white_stone = 2;
 
-	//ループ終了条件:盤面上に石を配置していない場所がある、黒か白の石が0になる
-	while (game_end != 0 && black_stone == 0 && white_stone == 0)
+	//ループ終了条件:盤面上に石を配置していない場所がある、黒か白の石が0になる、両プレイヤーがパスする
+	while (game_end != 0 && black_stone != 0 && white_stone != 0 && pass_flag != 2)
 	{
 		//盤面の石カウント初期化
 		game_end = 0;
@@ -34,8 +52,17 @@ void game_progress(int* b)
 		//黒石のターンのとき
 		if (turn == BLACK_STONE)
 		{
+			/* 4.現在のプレイヤーの表示 */
 			//現在のプレイヤー表示
-			printf("現在のプレイヤー:%s", BLACK_STONE_STR);
+			//同一ターンで1回だけ表示
+			if (message_flag == 0)
+			{
+				printf("現在のプレイヤー:%s\n", BLACK_STONE_STR);
+			}
+			else
+			{
+				;
+			}
 			
 			//パスの有無判定
 			//ps = pass_check(b);
@@ -54,8 +81,8 @@ void game_progress(int* b)
 				//パスしない場合
 				//else if(num == 0)
 				//{
-					//石の配置
-					turn = stone_set(b, BLACK_STONE, WHITE_STONE);
+			//石の配置
+			turn = stone_set(b, BLACK_STONE, WHITE_STONE);
 				//}
 				//入力値が0か1以外だったとき
 				//else
@@ -74,11 +101,23 @@ void game_progress(int* b)
 		//白石のターンのとき
 		else
 		{
+			/* 4.現在のプレイヤーの表示 */
 			//現在のプレイヤー表示
-			printf("現在のプレイヤー:%s", WHITE_STONE_STR);
+			//同一ターンで1回だけ表示
+			if (message_flag == 0)
+			{
+				printf("現在のプレイヤー:%s\n", WHITE_STONE_STR);
+			}
+			else
+			{
+				;
+			}
+
+			//石の配置
+			turn = stone_set(b, WHITE_STONE, BLACK_STONE);
 			
 			//黒石にターンを渡す
-			turn = BLACK_STONE;
+			//turn = BLACK_STONE;
 		}
 		
 		//盤面の未配置の数と石の数を管理
@@ -110,4 +149,24 @@ void game_progress(int* b)
 			}
 		}
 	}
+
+	//勝敗の判定
+	//黒が勝利のとき
+	if (white_stone < black_stone)
+	{
+		winner = BLACK_STONE;
+	}
+	//白が勝利のとき
+	else if (black_stone < white_stone)
+	{
+		winner = WHITE_STONE;
+	}
+	//引き分けのとき
+	else
+	{
+		winner = 3;
+	}
+
+	//勝敗を返す
+	return winner;
 }

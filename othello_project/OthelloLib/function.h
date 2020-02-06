@@ -5,7 +5,7 @@
 void game_start();
 
 //ゲームを進行する関数
-void game_progress(int* b);
+int game_progress(int* b);
 
 //パスの有無をチェックする関数(引数:盤面の情報)
 int pass_check(int* b);
@@ -18,10 +18,6 @@ int stone_set(int* b, int active_turn, int not_active_turn);
 
 //値を入力する関数
 int number_input();
-
-
-//ターンを管理する変数
-int turn;
 
 
 #endif // !_FUNCTION_H_
