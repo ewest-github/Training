@@ -13,21 +13,28 @@ extern int message_flag;
 //パスフラグ
 extern int pass_flag;
 
-int pass_check(int* b)
+int pass_check(int* board)
 {
-	//パスフラグ
-	int ps = 0;
+	//石配置可能マス数
+	int stone_set_count = 0;
+
+	//コマ配置可能座標
+	POINT COORDINATE;
 
 	//ループ終了条件:縦の全てのマスをチェックするまで
-	for (int h = 0; h < HEIGHT; h++)
+	for (int height = 0; height < HEIGHT; height++)
 	{
 		//ループ終了条件:横の全てのマスをチェックするまで
-		for (int w = 0; w < WIDTH; w++)
+		for (int width = 0; width < WIDTH; width++)
 		{
 			//該当マスがコマ未配置のとき
-			if (*(b + (h * HEIGHT) + w) == 0)
+			if (*(board + (height * HEIGHT) + width) == NONE_PLAY)
 			{
-				ps = ps + stone_rolling(b, h, w, 0);
+				//構造体に座標を代入
+				COORDINATE.y = height;
+				COORDINATE.x = width;
+
+				stone_set_count = stone_set_count + stone_rolling(board, COORDINATE, MODE_STONE_SET_CHECK);
 			}
 			//該当マスがコマ配置済みの場合
 			else
@@ -37,7 +44,7 @@ int pass_check(int* b)
 		}
 	}
 
-	return ps;
+	return stone_set_count;
 }
 
 int number_input()
@@ -51,7 +58,7 @@ int number_input()
 	return num;
 }
 
-int stone_set(int* b, int active_turn, int not_active_turn)
+int stone_set(int* board, int active_turn, int not_active_turn)
 {
 	//ターンを返す
 	int ac_turn = 0;
@@ -63,27 +70,32 @@ int stone_set(int* b, int active_turn, int not_active_turn)
 	int width = 0;
 	int height = 0;
 
+	//座標の構造体
+	POINT COORDINATE;
+
 	/* 5.石の配置位置の入力 */
 	//石の配置位置の入力
-	if (message_flag == 0)
+	if (message_flag == NON_DISPLAY)
 	{
 		printf("石の位置を入力して下さい。\n");
 
 		//同一ターンに2回以上表示しない
-		message_flag = 1;
+		message_flag = DISPLAY;
 	}
 	else
 	{
 		;
 	}
 	printf("横:");
-	width = number_input();
+	//width = number_input();
+	COORDINATE.x = number_input();
 	printf("縦:");
-	height = number_input();
+	//height = number_input();
+	COORDINATE.y = number_input();
 
 	//入力値の有効判定
 	//盤面の範囲外のとき
-	if(width < 0 || 7 < width || height < 0 || 7 < height)
+	if(COORDINATE.x < BOARD_LINE_INDEX_1 || BOARD_LINE_INDEX_8 < COORDINATE.x || COORDINATE.y < BOARD_LINE_INDEX_1 || BOARD_LINE_INDEX_8 < COORDINATE.y)
 	{
 		/* 6.石のエラーメッセージ表示 */
 		printf("盤面の範囲外です、違う場所を指定してください。\n");
@@ -94,7 +106,7 @@ int stone_set(int* b, int active_turn, int not_active_turn)
 	else
 	{
 		//石が配置済みのとき
-		if (*(b + (height * HEIGHT) + width) != 0)
+		if (*(board + (COORDINATE.y * HEIGHT) + COORDINATE.x) != NONE_PLAY)
 		{
 			/* 6.石のエラーメッセージ表示 */
 			printf("既に石を配置済みなので、違う場所を指定してください。\n");
@@ -105,24 +117,27 @@ int stone_set(int* b, int active_turn, int not_active_turn)
 		else
 		{
 			//石が配置可能なとき
-			if (stone_rolling(b, height, width, 0) == 1)
+			if (STONE_SET_DISABLE < stone_rolling(board, COORDINATE, MODE_STONE_SET_CHECK))
 			{
 				//石の配置動作
-				*(b + (height * HEIGHT) + width) = active_turn;
+				*(board + (COORDINATE.y * HEIGHT) + COORDINATE.x) = active_turn;
 
 				/* 7.石の自動反転 */
 				//反転動作
-				stone_rolling(b, height, width, 1);
+				stone_rolling(board, COORDINATE, MODE_STONE_INVERSION);
 			
 				//ターンを渡す
 				ac_turn = not_active_turn;
 				
 				/* 10.反転後の盤面表示 */
 				//盤面を表示する
-				printBoard(b, 64);
+				printBoard(board, 64);
 
 				//メッセージ表示フラグの解除
-				message_flag = 0;
+				message_flag = NON_DISPLAY;
+
+				//パスフラグの解除
+				pass_flag = 0;
 			}
 			//石が配置できないとき
 			else
@@ -134,10 +149,10 @@ int stone_set(int* b, int active_turn, int not_active_turn)
 					num = number_input();
 
 					//パスする場合
-					if (num == 1)
+					if (num == PASS)
 					{
 						//石を配置できる場所があるとき
-						if (0 < pass_check(b))
+						if (0 < pass_check(board))
 						{
 							printf("配置可能な石があるためパスできません。\n");
 
@@ -157,11 +172,11 @@ int stone_set(int* b, int active_turn, int not_active_turn)
 							pass_flag++;
 
 							//メッセージ表示フラグの解除
-							message_flag = 0;
+							message_flag = NON_DISPLAY;
 						}
 					}
 					//パスしない場合
-					else if (num == 0)
+					else if (num == NOT_PASS)
 					{
 						//ターンを渡さない
 						ac_turn = active_turn;
@@ -175,7 +190,7 @@ int stone_set(int* b, int active_turn, int not_active_turn)
 						//ターンを渡さない
 						ac_turn = active_turn;
 					}
-				} while (num != 0 && num != 1);
+				} while (num != NOT_PASS && num != PASS);
 			}
 		}
 	}

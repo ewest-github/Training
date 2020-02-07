@@ -12,10 +12,10 @@ int message_flag;
 //パスフラグ
 int pass_flag;
 
-int game_progress(int* b)
+int game_progress(int* board)
 {
 	//パスフラグ
-	int ps = 0;
+	//int ps = 0;
 
 	//勝者
 	int winner = 0;
@@ -42,7 +42,7 @@ int game_progress(int* b)
 	int white_stone = 2;
 
 	//ループ終了条件:盤面上に石を配置していない場所がある、黒か白の石が0になる、両プレイヤーがパスする
-	while (game_end != 0 && black_stone != 0 && white_stone != 0 && pass_flag != 2)
+	while (game_end != 0 && black_stone != NONE_PLAY && white_stone != NONE_PLAY && pass_flag != 2)
 	{
 		//盤面の石カウント初期化
 		game_end = 0;
@@ -55,7 +55,7 @@ int game_progress(int* b)
 			/* 4.現在のプレイヤーの表示 */
 			//現在のプレイヤー表示
 			//同一ターンで1回だけ表示
-			if (message_flag == 0)
+			if (message_flag == NON_DISPLAY)
 			{
 				printf("現在のプレイヤー:%s\n", BLACK_STONE_STR);
 			}
@@ -82,7 +82,7 @@ int game_progress(int* b)
 				//else if(num == 0)
 				//{
 			//石の配置
-			turn = stone_set(b, BLACK_STONE, WHITE_STONE);
+			turn = stone_set(board, BLACK_STONE, WHITE_STONE);
 				//}
 				//入力値が0か1以外だったとき
 				//else
@@ -104,7 +104,7 @@ int game_progress(int* b)
 			/* 4.現在のプレイヤーの表示 */
 			//現在のプレイヤー表示
 			//同一ターンで1回だけ表示
-			if (message_flag == 0)
+			if (message_flag == NON_DISPLAY)
 			{
 				printf("現在のプレイヤー:%s\n", WHITE_STONE_STR);
 			}
@@ -114,7 +114,7 @@ int game_progress(int* b)
 			}
 
 			//石の配置
-			turn = stone_set(b, WHITE_STONE, BLACK_STONE);
+			turn = stone_set(board, WHITE_STONE, BLACK_STONE);
 			
 			//黒石にターンを渡す
 			//turn = BLACK_STONE;
@@ -128,17 +128,17 @@ int game_progress(int* b)
 			for (int w = 0; w < WIDTH; w++)
 			{
 				//該当マスがコマ未配置のとき
-				if (*(b + (h * HEIGHT) + w) == 0)
+				if (*(board + (h * HEIGHT) + w) == NONE_PLAY)
 				{
 					game_end++;
 				}
 				//該当マスが黒石配置済みの場合
-				else if (*(b + (h * HEIGHT) + w) == BLACK_STONE)
+				else if (*(board + (h * HEIGHT) + w) == BLACK_STONE)
 				{
 					black_stone++;
 				}
 				//該当マスが白石配置済みの場合
-				else if (*(b + (h * HEIGHT) + w) == WHITE_STONE)
+				else if (*(board + (h * HEIGHT) + w) == WHITE_STONE)
 				{
 					white_stone++;
 				}
@@ -164,7 +164,7 @@ int game_progress(int* b)
 	//引き分けのとき
 	else
 	{
-		winner = 3;
+		winner = NONE_FINISH;
 	}
 
 	//勝敗を返す
