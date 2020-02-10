@@ -87,10 +87,8 @@ int stone_set(int* board, int active_turn, int not_active_turn)
 		;
 	}
 	printf("横:");
-	//width = number_input();
 	COORDINATE.x = number_input();
 	printf("縦:");
-	//height = number_input();
 	COORDINATE.y = number_input();
 
 	//入力値の有効判定
@@ -164,9 +162,6 @@ int stone_set(int* board, int active_turn, int not_active_turn)
 						{
 							//ターンを渡す
 							ac_turn = not_active_turn;
-
-							//盤面を表示する
-							//printBoard(b, 64);
 
 							//パスフラグを立てる
 							pass_flag++;

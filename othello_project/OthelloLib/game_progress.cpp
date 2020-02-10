@@ -116,8 +116,6 @@ int game_progress(int* board)
 			//石の配置
 			turn = stone_set(board, WHITE_STONE, BLACK_STONE);
 			
-			//黒石にターンを渡す
-			//turn = BLACK_STONE;
 		}
 		
 		//盤面の未配置の数と石の数を管理
