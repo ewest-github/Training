@@ -14,6 +14,18 @@ int main() {
 	//勝利プレイヤー
 	int win_player = 0;
 
+	//対戦相手(CPU)のレベルを管理する変数
+	int level = 0;
+
+	//レベル選択
+	printf("対戦相手(CPU)のレベルを選択してください。(弱1～強5)\n");
+	level = number_input();
+	while (level < 1 || 5 < level)
+	{
+		printf("1から5で入力して下さい。\n");
+		level = number_input();
+	}
+
 	/* 1.石の初期配置 */
 	//【提供関数】盤面の石の配置を初期化する(全て未配置ではなくゲーム開始時点の状態)
 	initializeBoard(*board, 64);
@@ -32,7 +44,7 @@ int main() {
 	/* 8.パス有無の入力 */
 	/* 9.パス有無のエラーメッセージ表示 */
 	/* 10.反転後の盤面表示 */
-	win_player = game_progress(*board);
+	win_player = game_progress(*board, level);
 
 	/* 11.勝利メッセージの表示 */
 	//黒の勝利

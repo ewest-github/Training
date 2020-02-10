@@ -7,6 +7,9 @@
 //アクティブターン
 extern int turn;
 
+//石の反転個数
+extern int reverse_count;
+
 //方向毎に反転可否の判定と石を反転する関数
 int stone_direction(int* board, POINT COORDINATE, int direction, int mode);
 int stone_coordinate(int* board, POINT COORDINATE, POINT* MOVE, POINT* direction_point, int direction, int mode);
@@ -352,7 +355,8 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 				}
 				else
 				{
-					;
+					//反転個数カウントアップ
+					reverse_count++;
 				}
 			}
 			//端のとき
@@ -377,7 +381,8 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 				}
 				else
 				{
-					;
+					//反転個数カウントアップ
+					reverse_count++;
 				}
 			}
 			//端のとき
@@ -402,7 +407,8 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 				}
 				else
 				{
-					;
+					//反転個数カウントアップ
+					reverse_count++;
 				}
 			}
 			//端のとき
@@ -427,7 +433,8 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 				}
 				else
 				{
-					;
+					//反転個数カウントアップ
+					reverse_count++;
 				}
 			}
 			//端のとき
@@ -452,7 +459,8 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 				}
 				else
 				{
-					;
+					//反転個数カウントアップ
+					reverse_count++;
 				}
 			}
 			//端のとき
@@ -477,7 +485,8 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 				}
 				else
 				{
-					;
+					//反転個数カウントアップ
+					reverse_count++;
 				}
 			}
 			//端のとき
@@ -502,7 +511,8 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 				}
 				else
 				{
-					;
+					//反転個数カウントアップ
+					reverse_count++;
 				}
 			}
 			//端のとき
@@ -527,7 +537,8 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 				}
 				else
 				{
-					;
+					//反転個数カウントアップ
+					reverse_count++;
 				}
 			}
 			//端のとき
@@ -560,6 +571,9 @@ int stone_coordinate(int* board, POINT COORDINATE, POINT* MOVE, POINT* direction
 	{
 		//石配置可能フラグを立てる
 		stone_set_flag = STONE_SET_ENABLE;
+
+		//反転個数カウントアップ
+		reverse_count++;
 	}
 	//反転動作を行う
 	else if (mode == MODE_STONE_INVERSION)

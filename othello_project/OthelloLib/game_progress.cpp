@@ -13,7 +13,10 @@ int message_flag;
 //パスフラグ
 int pass_flag;
 
-int game_progress(int* board)
+//石の反転個数
+int reverse_count;
+
+int game_progress(int* board, int level)
 {
 	//パスフラグ
 	//int ps = 0;
@@ -38,6 +41,9 @@ int game_progress(int* board)
 
 	//石を配置する座標
 	int set_stone = 0;
+
+	//反転個数
+	reverse_count = 0;
 
 	//ターン管理用変数(黒が先手)
 	turn = BLACK_STONE;
@@ -114,24 +120,41 @@ int game_progress(int* board)
 			//配置可能な座標数
 			set_count = pass_check(board);
 
-			//メモリブロック確保
-			stone_position = (POINT*)malloc(sizeof(POINT) * set_count);
+			//ターン開始表示
+			printf("現在のプレイヤー:%s\n", WHITE_STONE_STR);
 
-			//配置可能な座標を取得
-			position_check(board, stone_position);
+			//パス動作
+			if (set_count == 0)
+			{
+				printf("挟む石がありません。パスします\n");
+			}
+			else
+			{
+				//メモリブロック確保
+				stone_position = (POINT*)malloc(sizeof(POINT) * set_count);
 
-			//石を配置する座標の決定
-			set_stone = rand() % set_count;
+				//配置可能な座標を取得
+				position_check(board, stone_position);
 
-			//石の配置
-			*(board + ((stone_position + set_stone)->y * HEIGHT) + (stone_position + set_stone)->x) = WHITE_STONE;
+				//レベルに応じたアドレスを取得
+				set_stone = CPU_level(stone_position, set_count, level);
 
-			//石の反転
-			stone_rolling(board, *(stone_position + set_stone), MODE_STONE_INVERSION);
+				//石の配置
+				*(board + ((stone_position + set_stone)->y * HEIGHT) + (stone_position + set_stone)->x) = WHITE_STONE;
 
-			/* 10.反転後の盤面表示 */
-			//盤面を表示する
-			printBoard(board, 64);
+				//石の反転
+				stone_rolling(board, *(stone_position + set_stone), MODE_STONE_INVERSION);
+
+				/* 10.反転後の盤面表示 */
+				//盤面を表示する
+				printBoard(board, 64);
+
+				//反転個数の初期化
+				reverse_count = 0;
+
+				//メモリブロックの解放
+				free(stone_position);
+			}
 
 			//ターンを渡す
 			turn = BLACK_STONE;
@@ -152,9 +175,6 @@ int game_progress(int* board)
 			//石の配置
 			turn = stone_set(board, WHITE_STONE, BLACK_STONE);
 			*/
-
-			free(stone_position);
-			
 		}
 		
 		//盤面の未配置の数と石の数を管理
@@ -206,4 +226,30 @@ int game_progress(int* board)
 
 	//勝敗を返す
 	return winner;
+}
+
+int CPU_level(POINT* stone_position, int set_count, int level)
+{
+	//石を配置する座標
+	int set_stone;
+
+	switch (level)
+	{
+	case 1:
+		//石を配置する座標の決定
+		set_stone = rand() % set_count;
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	case 4:
+		break;
+	case 5:
+		break;
+	default:
+		break;
+	}
+
+	return set_stone;
 }

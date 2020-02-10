@@ -35,7 +35,7 @@ int pass_check(int* board)
 				COORDINATE.x = width;
 
 				//Î”z’u‰Â”\‚È‚Æ‚«
-				if (0 < stone_rolling(board, COORDINATE, MODE_STONE_SET_CHECK))
+				if (STONE_SET_DISABLE < stone_rolling(board, COORDINATE, MODE_STONE_SET_CHECK))
 				{
 					stone_set_count++;
 				}
