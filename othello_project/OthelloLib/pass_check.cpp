@@ -34,7 +34,15 @@ int pass_check(int* board)
 				COORDINATE.y = height;
 				COORDINATE.x = width;
 
-				stone_set_count = stone_set_count + stone_rolling(board, COORDINATE, MODE_STONE_SET_CHECK);
+				//石配置可能なとき
+				if (0 < stone_rolling(board, COORDINATE, MODE_STONE_SET_CHECK))
+				{
+					stone_set_count++;
+				}
+				else
+				{
+					;
+				}
 			}
 			//該当マスがコマ配置済みの場合
 			else
@@ -45,6 +53,56 @@ int pass_check(int* board)
 	}
 
 	return stone_set_count;
+}
+
+void position_check(int* board, POINT* stone_position)
+{
+	//石配置可能フラグ
+	int stone_set_count = 0;
+
+	//座標格納アドレス
+	int position_save = 0;
+
+	//コマ配置可能座標
+	POINT COORDINATE;
+
+	//ループ終了条件:縦の全てのマスをチェックするまで
+	for (int height = 0; height < HEIGHT; height++)
+	{
+		//ループ終了条件:横の全てのマスをチェックするまで
+		for (int width = 0; width < WIDTH; width++)
+		{
+			//該当マスがコマ未配置のとき
+			if (*(board + (height * HEIGHT) + width) == NONE_PLAY)
+			{
+				//構造体に座標を代入
+				COORDINATE.y = height;
+				COORDINATE.x = width;
+
+				stone_set_count = stone_rolling(board, COORDINATE, MODE_STONE_SET_CHECK);
+
+				//石配置可能な座標のとき
+				if (0 < stone_set_count)
+				{
+					//座標の保存
+					(stone_position + position_save)->y = height;
+					(stone_position + position_save)->x = width;
+
+					//アドレスのカウントアップ
+					position_save++;
+				}
+				else
+				{
+					;
+				}
+			}
+			//該当マスがコマ配置済みの場合
+			else
+			{
+				;
+			}
+		}
+	}
 }
 
 int number_input()

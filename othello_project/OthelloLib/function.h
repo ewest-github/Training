@@ -10,6 +10,9 @@ int game_progress(int* board);
 //パスの有無をチェックする関数(引数:盤面の情報)
 int pass_check(int* board);
 
+//石配置可能な座標を取得する関数
+void position_check(int* board, POINT* stone_position);
+
 //石の反転可否を判定する関数(引数:盤面の情報、縦の座標、横の座標、機能させる動作)
 int stone_rolling(int* board, POINT COORDINATE, int mode);
 

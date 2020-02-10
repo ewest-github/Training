@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 
 #include "OthelloLib.h"
 #include "function.h"
@@ -28,6 +29,15 @@ int game_progress(int* board)
 
 	//パス有無入力値
 	//int num = 0;
+
+	//石配置可能な座標数
+	int set_count = 0;
+
+	//石配置可能な座標
+	POINT* stone_position;
+
+	//石を配置する座標
+	int set_stone = 0;
 
 	//ターン管理用変数(黒が先手)
 	turn = BLACK_STONE;
@@ -101,9 +111,35 @@ int game_progress(int* board)
 		//白石のターンのとき
 		else
 		{
+			//配置可能な座標数
+			set_count = pass_check(board);
+
+			//メモリブロック確保
+			stone_position = (POINT*)malloc(sizeof(POINT) * set_count);
+
+			//配置可能な座標を取得
+			position_check(board, stone_position);
+
+			//石を配置する座標の決定
+			set_stone = rand() % set_count;
+
+			//石の配置
+			*(board + ((stone_position + set_stone)->y * HEIGHT) + (stone_position + set_stone)->x) = WHITE_STONE;
+
+			//石の反転
+			stone_rolling(board, *(stone_position + set_stone), MODE_STONE_INVERSION);
+
+			/* 10.反転後の盤面表示 */
+			//盤面を表示する
+			printBoard(board, 64);
+
+			//ターンを渡す
+			turn = BLACK_STONE;
+			
 			/* 4.現在のプレイヤーの表示 */
 			//現在のプレイヤー表示
 			//同一ターンで1回だけ表示
+			/*
 			if (message_flag == NON_DISPLAY)
 			{
 				printf("現在のプレイヤー:%s\n", WHITE_STONE_STR);
@@ -115,6 +151,9 @@ int game_progress(int* board)
 
 			//石の配置
 			turn = stone_set(board, WHITE_STONE, BLACK_STONE);
+			*/
+
+			free(stone_position);
 			
 		}
 		
