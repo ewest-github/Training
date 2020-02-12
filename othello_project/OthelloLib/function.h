@@ -25,6 +25,15 @@ int CPU_level(POINT* stone_position, int set_count, int level);
 //石を多く反転できるアドレスを取得する関数
 int MAX_Inversion(POINT* stone_position, int set_count);
 
+//4辺に配置できるフラグを取得する関数
+void SIDE_stone_flag(POINT* stone_position, int set_count, int* side_address);
+
+//4辺を優先して取得する関数
+int SIDE_stone_put(POINT* stone_position, int set_count);
+
+//4隅を優先して取得する関数
+int CORNER_stone_put(POINT* stone_position, int set_count);
+
 //値を入力する関数
 int number_input();
 
