@@ -10,6 +10,9 @@ extern int turn;
 //Î‚Ì”½“]ŒÂ”
 extern int reverse_count;
 
+//Î‚Ì”½“]‡ŒvŒÂ”
+extern int reverse_total;
+
 //•ûŒü–ˆ‚É”½“]‰Â”Û‚Ì”»’è‚ÆÎ‚ğ”½“]‚·‚éŠÖ”
 int stone_direction(int* board, POINT COORDINATE, int direction, int mode);
 int stone_coordinate(int* board, POINT COORDINATE, POINT* MOVE, POINT* direction_point, int direction, int mode);
@@ -37,6 +40,12 @@ int stone_rolling(int* board, POINT COORDINATE, int mode)
 			{
 				//Î‚Ì”½“]“®ì
 				stone_set_flag = stone_set_flag + stone_direction(board, COORDINATE, DIRECTION_INDEX::LEFT, mode);
+
+				//Î‚Ì”½“]ŒÂ”‚ÌƒJƒEƒ“ƒg
+				reverse_total = reverse_total + reverse_count;
+
+				//”½“]ŒÂ”‚Ì‰Šú‰»
+				reverse_count = 0;
 			}
 			break;
 		//¶‰º•ûŒü
@@ -55,6 +64,12 @@ int stone_rolling(int* board, POINT COORDINATE, int mode)
 			{
 				//Î‚Ì”½“]“®ì
 				stone_set_flag = stone_set_flag + stone_direction(board, COORDINATE, DIRECTION_INDEX::LEFT_BOTTOM, mode);
+
+				//Î‚Ì”½“]ŒÂ”‚ÌƒJƒEƒ“ƒg
+				reverse_total = reverse_total + reverse_count;
+
+				//”½“]ŒÂ”‚Ì‰Šú‰»
+				reverse_count = 0;
 			}
 			break;
 		//‰º•ûŒü
@@ -68,6 +83,12 @@ int stone_rolling(int* board, POINT COORDINATE, int mode)
 			{
 				//Î‚Ì”½“]“®ì
 				stone_set_flag = stone_set_flag + stone_direction(board, COORDINATE, DIRECTION_INDEX::BOTTOM, mode);
+
+				//Î‚Ì”½“]ŒÂ”‚ÌƒJƒEƒ“ƒg
+				reverse_total = reverse_total + reverse_count;
+
+				//”½“]ŒÂ”‚Ì‰Šú‰»
+				reverse_count = 0;
 			}
 			break;
 		//‰E‰º•ûŒü
@@ -86,6 +107,12 @@ int stone_rolling(int* board, POINT COORDINATE, int mode)
 			{
 				//Î‚Ì”½“]“®ì
 				stone_set_flag = stone_set_flag + stone_direction(board, COORDINATE, DIRECTION_INDEX::RIGHT_BOTTOM, mode);
+
+				//Î‚Ì”½“]ŒÂ”‚ÌƒJƒEƒ“ƒg
+				reverse_total = reverse_total + reverse_count;
+
+				//”½“]ŒÂ”‚Ì‰Šú‰»
+				reverse_count = 0;
 			}
 			break;
 		//‰E•ûŒü
@@ -99,6 +126,12 @@ int stone_rolling(int* board, POINT COORDINATE, int mode)
 			{
 				//Î‚Ì”½“]“®ì
 				stone_set_flag = stone_set_flag + stone_direction(board, COORDINATE, DIRECTION_INDEX::RIGHT, mode);
+
+				//Î‚Ì”½“]ŒÂ”‚ÌƒJƒEƒ“ƒg
+				reverse_total = reverse_total + reverse_count;
+
+				//”½“]ŒÂ”‚Ì‰Šú‰»
+				reverse_count = 0;
 			}
 			break;
 		//‰Eã•ûŒü
@@ -117,6 +150,12 @@ int stone_rolling(int* board, POINT COORDINATE, int mode)
 			{
 				//Î‚Ì”½“]“®ì
 				stone_set_flag = stone_set_flag + stone_direction(board, COORDINATE, DIRECTION_INDEX::RIGHT_TOP, mode);
+
+				//Î‚Ì”½“]ŒÂ”‚ÌƒJƒEƒ“ƒg
+				reverse_total = reverse_total + reverse_count;
+
+				//”½“]ŒÂ”‚Ì‰Šú‰»
+				reverse_count = 0;
 			}
 			break;
 		//ã•ûŒü
@@ -130,6 +169,12 @@ int stone_rolling(int* board, POINT COORDINATE, int mode)
 			{
 				//Î‚Ì”½“]“®ì
 				stone_set_flag = stone_set_flag + stone_direction(board, COORDINATE, DIRECTION_INDEX::TOP, mode);
+
+				//Î‚Ì”½“]ŒÂ”‚ÌƒJƒEƒ“ƒg
+				reverse_total = reverse_total + reverse_count;
+
+				//”½“]ŒÂ”‚Ì‰Šú‰»
+				reverse_count = 0;
 			}
 			break;
 		//¶ã•ûŒü
@@ -148,6 +193,12 @@ int stone_rolling(int* board, POINT COORDINATE, int mode)
 			{
 				//Î‚Ì”½“]“®ì
 				stone_set_flag = stone_set_flag + stone_direction(board, COORDINATE, DIRECTION_INDEX::LEFT_TOP, mode);
+
+				//Î‚Ì”½“]ŒÂ”‚ÌƒJƒEƒ“ƒg
+				reverse_total = reverse_total + reverse_count;
+
+				//”½“]ŒÂ”‚Ì‰Šú‰»
+				reverse_count = 0;
 			}
 			break;
 		default:
@@ -188,6 +239,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 			//‰¡‚ª’[‚Ì‚Æ‚«
 			if (MOVE->x == BOARD_LINE_INDEX_1)
 			{
+				//Î‚Ì”½“]ŒÂ”‰Šú‰»
+				reverse_count = 0;
+
 				break;
 			}
 			else
@@ -200,6 +254,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 			//‰¡‚ª’[‚Ì‚Æ‚«
 			if (MOVE->x == BOARD_LINE_INDEX_1)
 			{
+				//Î‚Ì”½“]ŒÂ”‰Šú‰»
+				reverse_count = 0;
+
 				break;
 			}
 			else
@@ -209,6 +266,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 			//c‚ª’[‚Ì‚Æ‚«
 			if (MOVE->y == BOARD_LINE_INDEX_8)
 			{
+				//Î‚Ì”½“]ŒÂ”‰Šú‰»
+				reverse_count = 0;
+
 				break;
 			}
 		}
@@ -217,6 +277,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 			//c‚ª’[‚Ì‚Æ‚«
 			if (MOVE->y == BOARD_LINE_INDEX_8)
 			{
+				//Î‚Ì”½“]ŒÂ”‰Šú‰»
+				reverse_count = 0;
+
 				break;
 			}
 			else
@@ -229,6 +292,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 			//‰¡‚ª’[‚Ì‚Æ‚«
 			if (MOVE->x == BOARD_LINE_INDEX_8)
 			{
+				//Î‚Ì”½“]ŒÂ”‰Šú‰»
+				reverse_count = 0;
+
 				break;
 			}
 			else
@@ -238,6 +304,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 			//c‚ª’[‚Ì‚Æ‚«
 			if (MOVE->y == BOARD_LINE_INDEX_8)
 			{
+				//Î‚Ì”½“]ŒÂ”‰Šú‰»
+				reverse_count = 0;
+
 				break;
 			}
 			else
@@ -250,6 +319,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 			//‰¡‚ª’[‚Ì‚Æ‚«
 			if (MOVE->x == BOARD_LINE_INDEX_8)
 			{
+				//Î‚Ì”½“]ŒÂ”‰Šú‰»
+				reverse_count = 0;
+
 				break;
 			}
 			else
@@ -262,6 +334,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 			//‰¡‚ª’[‚Ì‚Æ‚«
 			if (MOVE->x == BOARD_LINE_INDEX_8)
 			{
+				//Î‚Ì”½“]ŒÂ”‰Šú‰»
+				reverse_count = 0;
+
 				break;
 			}
 			else
@@ -271,6 +346,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 			//c‚ª’[‚Ì‚Æ‚«
 			if (MOVE->y == BOARD_LINE_INDEX_1)
 			{
+				//Î‚Ì”½“]ŒÂ”‰Šú‰»
+				reverse_count = 0;
+
 				break;
 			}
 			else
@@ -283,6 +361,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 			//c‚ª’[‚Ì‚Æ‚«
 			if (MOVE->y == BOARD_LINE_INDEX_1)
 			{
+				//Î‚Ì”½“]ŒÂ”‰Šú‰»
+				reverse_count = 0;
+
 				break;
 			}
 			else
@@ -295,6 +376,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 			//‰¡‚ª’[‚Ì‚Æ‚«
 			if (MOVE->x == BOARD_LINE_INDEX_1)
 			{
+				//Î‚Ì”½“]ŒÂ”‰Šú‰»
+				reverse_count = 0;
+
 				break;
 			}
 			else
@@ -304,6 +388,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 			//c‚ª’[‚Ì‚Æ‚«
 			if (MOVE->y == BOARD_LINE_INDEX_1)
 			{
+				//Î‚Ì”½“]ŒÂ”‰Šú‰»
+				reverse_count = 0;
+
 				break;
 			}
 			else
@@ -319,6 +406,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 		//’Tõ•ûŒü‚Ìƒ}ƒX‚ª–¢”z’u‚Ì‚Æ‚«
 		if (*(board + ((MOVE->y + direction_point[direction].y) * HEIGHT) + MOVE->x + direction_point[direction].x) == NONE_PLAY)
 		{
+			//Î‚Ì”½“]ŒÂ”‰Šú‰»
+			reverse_count = 0;
+
 			break;
 		}
 		else
@@ -328,6 +418,9 @@ int stone_direction(int* board, POINT COORDINATE, int direction, int mode)
 		//’Tõ•ûŒü‚Ì—×‚Ìƒ}ƒX‚Æ“¯‚¶F‚ÌÎ‚Ì‚Æ‚«
 		if (*(board + ((COORDINATE.y + direction_point[direction].y) * HEIGHT) + COORDINATE.x + direction_point[direction].x) == turn)
 		{
+			//Î‚Ì”½“]ŒÂ”‰Šú‰»
+			reverse_count = 0;
+
 			break;
 		}
 		else

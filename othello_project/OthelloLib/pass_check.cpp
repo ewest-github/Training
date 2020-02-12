@@ -13,6 +13,15 @@ extern int message_flag;
 //パスフラグ
 extern int pass_flag;
 
+//石の反転個数カウンター
+extern int reverse_count;
+
+//石の反転合計個数
+int reverse_total;
+
+//座標毎の反転個数
+extern int reverse_stone[20];
+
 int pass_check(int* board)
 {
 	//石配置可能マス数
@@ -43,6 +52,10 @@ int pass_check(int* board)
 				{
 					;
 				}
+
+				//石の配置可否のチェック段階では石の反転個数のカウントは不要
+				reverse_count = 0;
+				reverse_total = 0;
 			}
 			//該当マスがコマ配置済みの場合
 			else
@@ -62,6 +75,9 @@ void position_check(int* board, POINT* stone_position)
 
 	//座標格納アドレス
 	int position_save = 0;
+
+	//石の反転合計個数
+	reverse_total = 0;
 
 	//コマ配置可能座標
 	POINT COORDINATE;
@@ -87,6 +103,12 @@ void position_check(int* board, POINT* stone_position)
 					//座標の保存
 					(stone_position + position_save)->y = height;
 					(stone_position + position_save)->x = width;
+
+					//反転個数の保持
+					reverse_stone[position_save] = reverse_total;
+
+					//反転合計個数のリセット
+					reverse_total = 0;
 
 					//アドレスのカウントアップ
 					position_save++;

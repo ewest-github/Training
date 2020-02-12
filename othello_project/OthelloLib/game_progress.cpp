@@ -13,8 +13,11 @@ int message_flag;
 //パスフラグ
 int pass_flag;
 
-//石の反転個数
+//石の反転個数カウント
 int reverse_count;
+
+//座標毎の反転個数
+int reverse_stone[20];
 
 int game_progress(int* board, int level)
 {
@@ -149,8 +152,13 @@ int game_progress(int* board, int level)
 				//盤面を表示する
 				printBoard(board, 64);
 
-				//反転個数の初期化
+				//反転座標と個数の初期化
 				reverse_count = 0;
+
+				for (int i = 0; i < set_count; i++)
+				{
+					reverse_stone[i] = 0;
+				}
 
 				//メモリブロックの解放
 				free(stone_position);
@@ -231,7 +239,10 @@ int game_progress(int* board, int level)
 int CPU_level(POINT* stone_position, int set_count, int level)
 {
 	//石を配置する座標
-	int set_stone;
+	int set_stone = 0;
+
+	//反転数が同数になる座標の数
+	int tie = 1;
 
 	switch (level)
 	{
@@ -240,6 +251,59 @@ int CPU_level(POINT* stone_position, int set_count, int level)
 		set_stone = rand() % set_count;
 		break;
 	case 2:
+		//要素数-1回繰り返し
+		for (int bubble = 0; bubble < set_count - 1; bubble++)
+		{
+			//反転個数で昇順ソート
+			for (int max_reverse = 0; max_reverse + 1 < set_count - bubble; max_reverse++)
+			{
+				//ソート用一時保管変数
+				int sort = 0;
+				POINT SORT;
+
+				//石の反転個数の多いほうが配列上位になるようにソート
+				if (reverse_stone[max_reverse] < reverse_stone[max_reverse + 1])
+				{
+					;
+				}
+				else
+				{
+					//ソート処理
+					sort = reverse_stone[max_reverse + 1];
+					SORT.y = stone_position[max_reverse + 1].y;
+					SORT.x = stone_position[max_reverse + 1].x;
+
+					reverse_stone[max_reverse + 1] = reverse_stone[max_reverse];
+					stone_position[max_reverse + 1].y = stone_position[max_reverse].y;
+					stone_position[max_reverse + 1].x = stone_position[max_reverse].x;
+
+					reverse_stone[max_reverse] = sort;
+					stone_position[max_reverse].y = SORT.y;
+					stone_position[max_reverse].x = SORT.x;
+				}
+			}
+		}
+
+		//石の反転個数の多い座標を保持
+		set_stone = set_count - 1;
+
+		//反転個数の最大値に対して同数が複数あるときの処理
+		for (int max_num = 0; max_num < set_count - 1; max_num++)
+		{
+			//反転個数の最大値と反転個数が同じとき
+			if (reverse_stone[set_count - 1] == reverse_stone[max_num])
+			{
+				//最大反転個数の座標の数をカウントアップ
+				tie++;
+			}
+			else
+			{
+				;
+			}
+		}
+
+		//同数の座標からランダムで1つ選択する
+		set_stone = (set_count - tie) + (rand() % tie);
 		break;
 	case 3:
 		break;
