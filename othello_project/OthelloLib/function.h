@@ -22,6 +22,9 @@ int stone_set(int* board, int active_turn, int not_active_turn);
 //レベル設定で配置形式を変更する関数
 int CPU_level(POINT* stone_position, int set_count, int level);
 
+//石を多く反転できるアドレスを取得する関数
+int MAX_Inversion(POINT* stone_position, int set_count);
+
 //値を入力する関数
 int number_input();
 
