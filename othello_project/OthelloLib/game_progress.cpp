@@ -130,6 +130,9 @@ int game_progress(int* board, int level)
 			if (set_count == 0)
 			{
 				printf("挟む石がありません。パスします\n");
+
+				//パスフラグを立てる
+				pass_flag++;
 			}
 			else
 			{
@@ -147,6 +150,9 @@ int game_progress(int* board, int level)
 
 				//石の反転
 				stone_rolling(board, *(stone_position + set_stone), MODE_STONE_INVERSION);
+
+				//パスフラグの解除
+				pass_flag = 0;
 
 				/* 10.反転後の盤面表示 */
 				//盤面を表示する
@@ -249,6 +255,7 @@ int CPU_level(POINT* stone_position, int set_count, int level)
 	case 1:
 		//石を配置する座標の決定
 		set_stone = rand() % set_count;
+
 		break;
 	case 2:
 		//反転できる石の多い座標に配置する
@@ -261,6 +268,9 @@ int CPU_level(POINT* stone_position, int set_count, int level)
 
 		break;
 	case 4:
+		//4隅の座標を優先して配置する
+		set_stone = CORNER_stone_put(stone_position, set_count);
+
 		break;
 	case 5:
 		break;
@@ -455,6 +465,7 @@ int SIDE_stone_put(POINT* stone_position, int set_count)
 		}
 	}
 
+	//座標決定処理
 	//4辺に配置できる座標数が0のとき
 	if (side_put == 0)
 	{
@@ -510,6 +521,41 @@ int CORNER_stone_put(POINT* stone_position, int set_count)
 		{
 			//4辺に配置できる数をカウントアップ
 			side_put++;
+		}
+		else
+		{
+			;
+		}
+	}
+
+	//座標決定処理
+	//4隅に配置可能な座標が複数あるとき
+	if (1 < corner_put)
+	{
+		set_stone = MAX_Inversion(stone_position, corner_put);
+	}
+	//4隅に配置可能な座標が1つのみのとき
+	else if (corner_put == 1)
+	{
+		set_stone = 0;
+	}
+	//4隅に配置可能な座標がないとき
+	else
+	{
+		//4辺に配置可能な座標が複数あるとき
+		if (1 < side_put)
+		{
+			set_stone = MAX_Inversion(stone_position, side_put);
+		}
+		//4辺に配置可能な座標が1つのみのとき
+		else if (side_put == 1)
+		{
+			set_stone = 0;
+		}
+		//4辺に配置可能な座標がないとき
+		else
+		{
+			set_stone = MAX_Inversion(stone_position, set_count);
 		}
 	}
 
