@@ -5,7 +5,7 @@
 void game_start();
 
 //ゲームを進行する関数
-int game_progress(int* board, int level);
+int game_progress(int level);
 
 //パスの有無をチェックする関数(引数:盤面の情報)
 int pass_check(int* board);
@@ -17,7 +17,7 @@ void position_check(int* board, POINT* stone_position);
 int stone_rolling(int* board, POINT COORDINATE, int mode);
 
 //石を配置する関数
-int stone_set(int* board, int active_turn, int not_active_turn);
+int stone_set(int active_turn, int not_active_turn);
 
 //レベル設定で配置形式を変更する関数
 int CPU_level(POINT* stone_position, int set_count, int level);
@@ -33,6 +33,9 @@ int SIDE_stone_put(POINT* stone_position, int set_count);
 
 //4隅を優先して取得する関数
 int CORNER_stone_put(POINT* stone_position, int set_count);
+
+//相手の1手先を計算して取得する関数
+int onehand_stone_put(POINT * stone_position, int set_count);
 
 //値を入力する関数
 int number_input();

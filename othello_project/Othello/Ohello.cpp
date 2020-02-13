@@ -4,12 +4,16 @@
 #include "OthelloLib.h"
 #include "function.h"
 
-//testAAAAsss
+//オセロ盤面の石配置配列の定義
+int* board;
 
 int main() {
 	
 	//オセロ盤面の石配置配列の定義
-	int board[8][8] = {};
+	int stone_board[8][8] = {};
+
+	//先頭アドレスを格納する
+	board = &stone_board[0][0];
 
 	//勝利プレイヤー
 	int win_player = 0;
@@ -28,11 +32,11 @@ int main() {
 
 	/* 1.石の初期配置 */
 	//【提供関数】盤面の石の配置を初期化する(全て未配置ではなくゲーム開始時点の状態)
-	initializeBoard(*board, 64);
+	initializeBoard(board, 64);
 
 	/* 2.盤面の表示 */
 	//【提供関数】オセロの盤面を描画する(レイアウトから全て描画される)
-	printBoard(*board, 64);
+	printBoard(board, 64);
 
 	/* 3.ゲーム開始時の表示 */
 	game_start();
@@ -44,7 +48,7 @@ int main() {
 	/* 8.パス有無の入力 */
 	/* 9.パス有無のエラーメッセージ表示 */
 	/* 10.反転後の盤面表示 */
-	win_player = game_progress(*board, level);
+	win_player = game_progress(level);
 
 	/* 11.勝利メッセージの表示 */
 	//黒の勝利

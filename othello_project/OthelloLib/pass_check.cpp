@@ -4,8 +4,11 @@
 #include "OthelloLib.h"
 #include "function.h"
 
+//オセロ盤面の石配置配列の定義
+extern int* board;
+
 //アクティブターン
-extern int turn;
+//extern int turn;
 
 //メッセージ表示フラグ
 extern int message_flag;
@@ -138,7 +141,7 @@ int number_input()
 	return num;
 }
 
-int stone_set(int* board, int active_turn, int not_active_turn)
+int stone_set(int active_turn, int not_active_turn)
 {
 	//ターンを返す
 	int ac_turn = 0;

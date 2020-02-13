@@ -4,6 +4,9 @@
 #include "OthelloLib.h"
 #include "function.h"
 
+//オセロ盤面の石配置配列の定義
+extern int* board;
+
 //アクティブターン
 extern int turn;
 
