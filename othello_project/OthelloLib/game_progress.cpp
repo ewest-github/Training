@@ -622,7 +622,7 @@ int onehand_stone_put(POINT* stone_position, int set_count)
 		}
 
 		//反転座標と個数の初期化
-		for (int i = 0; i < hand_set_count; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			reverse_stone[i] = 0;
 		}
@@ -641,26 +641,29 @@ int onehand_stone_put(POINT* stone_position, int set_count)
 		//ランク毎の座標数をカウントする
 		for (int num = 0; num < set_count; num++)
 		{
+			//仮配置したときに4隅に配置可能になってしまうとき
 			if (*(hand_level + num) == 2)
 			{
 				corner_count++;
 			}
+			//仮配置したときに4辺に配置可能になってしまうとき
 			else if (*(hand_level + num) == 1)
 			{
 				side_count++;
 			}
+			//仮配置したときに4隅にも4辺にも配置不可能なとき
 			else
 			{
 				non_side_count++;
 			}
 		}
 
-		//座標のランクで降順ソートする
+		//座標のランクで昇順ソートする
 		//要素数-1回繰り返し
-		for (int bubble = 0; bubble <= set_count - 1; bubble++)
+		for (int bubble = 0; bubble < set_count - 1; bubble++)
 		{
-			//4辺の配置可否で降順ソート
-			for (int max_reverse = set_count - 1; bubble <= max_reverse - 1; max_reverse--)
+			//4辺の配置可否で昇順ソート
+			for (int max_reverse = 0; max_reverse + 1 < set_count - bubble; max_reverse++)
 			{
 				//ソート用一時保管変数
 				int sort = 0;
@@ -671,27 +674,27 @@ int onehand_stone_put(POINT* stone_position, int set_count)
 				side_sort = (int*)malloc(sizeof(int));
 
 				//4辺に配置できる配列が降順になるようにソート
-				if (*(hand_level + (max_reverse - 1)) < *(hand_level + max_reverse))
+				if (*(hand_level + max_reverse) < *(hand_level + (max_reverse + 1)))
 				{
-					//ソート処理
-					sort = reverse_stone[max_reverse];
-					SORT.y = stone_position[max_reverse].y;
-					SORT.x = stone_position[max_reverse].x;
-					*(side_sort) = *(hand_level + max_reverse);
-
-					reverse_stone[max_reverse] = reverse_stone[max_reverse - 1];
-					stone_position[max_reverse].y = stone_position[max_reverse - 1].y;
-					stone_position[max_reverse].x = stone_position[max_reverse - 1].x;
-					*(hand_level + max_reverse) = *(hand_level + (max_reverse - 1));
-
-					reverse_stone[max_reverse - 1] = sort;
-					stone_position[max_reverse - 1].y = SORT.y;
-					stone_position[max_reverse - 1].x = SORT.x;
-					*(hand_level + (max_reverse - 1)) = *(side_sort);
+					;
 				}
 				else
 				{
-					;
+					//ソート処理
+					sort = reverse_stone[max_reverse + 1];
+					SORT.y = stone_position[max_reverse + 1].y;
+					SORT.x = stone_position[max_reverse + 1].x;
+					*(side_sort) = *(hand_level + (max_reverse + 1));
+
+					reverse_stone[max_reverse + 1] = reverse_stone[max_reverse];
+					stone_position[max_reverse + 1].y = stone_position[max_reverse].y;
+					stone_position[max_reverse + 1].x = stone_position[max_reverse].x;
+					*(hand_level + (max_reverse + 1)) = *(hand_level + max_reverse);
+
+					reverse_stone[max_reverse] = sort;
+					stone_position[max_reverse].y = SORT.y;
+					stone_position[max_reverse].x = SORT.x;
+					*(hand_level + max_reverse) = *(side_sort);
 				}
 
 				//メモリブロックの解放
@@ -702,7 +705,7 @@ int onehand_stone_put(POINT* stone_position, int set_count)
 		//4辺でも4隅でもない座標に配置可能な座標があるとき
 		if (0 < non_side_count)
 		{
-			set_stone = MAX_Inversion(stone_position, non_side_count);
+			set_stone = CORNER_stone_put(stone_position, non_side_count);
 		}
 		//4辺でも4隅でもない座標に配置可能な座標がないとき
 		else
@@ -715,7 +718,7 @@ int onehand_stone_put(POINT* stone_position, int set_count)
 			//4辺に配置可能な座標が複数あるとき
 			else if (1 < side_count)
 			{
-				set_stone = MAX_Inversion(stone_position, side_count);
+				set_stone = CORNER_stone_put(stone_position, side_count);
 			}
 			//4辺に配置可能な座標がないとき
 			else
@@ -728,7 +731,7 @@ int onehand_stone_put(POINT* stone_position, int set_count)
 				//4隅に配置可能な座標が複数あるとき
 				else if (1 < corner_count)
 				{
-					set_stone = MAX_Inversion(stone_position, corner_count);
+					set_stone = CORNER_stone_put(stone_position, corner_count);
 				}
 				//4隅に配置可能な座標がないとき(ありえないケース)
 				else
