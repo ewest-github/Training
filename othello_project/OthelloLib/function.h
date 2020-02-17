@@ -40,6 +40,21 @@ int onehand_stone_put(POINT * stone_position, int set_count);
 //値を入力する関数
 int number_input();
 
+//CPUレベル
+enum mode_select_level
+{
+    level2,
+    level3,
+    level4,
+    level5,
+};
+
+//選択したレベルの関数を動作させる関数ポインタ
+int (*levelselect[])(POINT* stone_position, int set_count);
+
+//選択したレベルの値を変換する関数
+int level_conversion(mode_select_level lv, POINT* stone_position, int set_count);
+
 /** @def
  * メッセージ表示前
  */
